@@ -12,9 +12,12 @@ import { toast } from "react-toastify";
 
 function User() {
   const [users, setUsers] = useState([]);
+  const [edit, setEdit] = useState(null);
+  const [formData, setFormData] = useState({ name: "", email: "", age: "" });
 
   axios.defaults.withCredentials = true;
   const API_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchGetItem();
@@ -22,17 +25,21 @@ function User() {
 
   const fetchGetItem = async () => {
     try {
-      const result = await axios.get(`${API_URL}/api/getUser`);
+      const result = await axios.get(`${API_URL}/api/getUser`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (result.status === 201) {
         setUsers(result.data);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching users:", error);
+      if (error.response && error.response.status === 401) {
+        toast.error("Unauthorized. Please log in.");
+      }
     }
   };
-
-  const [edit, setEdit] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "", age: "" });
 
   const handleEdit = (user) => {
     setEdit(user._id);
@@ -41,23 +48,32 @@ function User() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${API_URL}/api/updateUser/${edit}`, formData);
+      await axios.put(`${API_URL}/api/updateUser/${edit}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setEdit(null);
       fetchGetItem();
       toast.success("Updated Successfully");
     } catch (err) {
-      console.log("Error updating user :", err);
-      toast.error("Oops ! something Wrong");
+      console.log("Error updating user:", err);
+      toast.error("Oops! Something went wrong.");
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/deleteUser/${id}`);
+      await axios.delete(`${API_URL}/api/deleteUser/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchGetItem();
       toast.success("Deleted successfully");
     } catch (err) {
-      console.log("Error deleting user :", err);
+      console.log("Error deleting user:", err);
+      toast.error("Failed to delete the user.");
     }
   };
 
@@ -72,7 +88,7 @@ function User() {
   // logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    toast.success("Logout !!");
+    toast.success("Logged out successfully!");
   };
 
   return (
@@ -80,26 +96,24 @@ function User() {
       <div className="d-flex vh-100 bg-dark justify-content-center align-items-center">
         <div className="bg-white w-90 w-sm-75 w-md-50 w-lg-40 rounded p-3">
           <div className="d-flex justify-content-between mb-4">
-            <Link to="/" className="btn btn-success mb-4 ">
-              {" "}
+            <Link to="/" className="btn btn-success mb-4">
               Add <IoMdPersonAdd className="mb-1" />
-            </Link>{" "}
+            </Link>
             <Link
               to="/login"
               onClick={handleLogout}
-              className="btn btn-danger  ms-3 mb-4"
+              className="btn btn-danger ms-3 mb-4"
             >
-              {" "}
               Logout
             </Link>
           </div>
 
           {users.length === 0 ? (
             <div className="text-center">
-              <p>No data to be found</p>
+              <p>No data found</p>
             </div>
           ) : (
-            <table className="table ">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Name</th>

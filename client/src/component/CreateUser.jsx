@@ -15,12 +15,21 @@ function CreateUser() {
   const API_URL = import.meta.env.VITE_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     try {
-      const res = await axios.post(`${API_URL}/api/createUser`, {
-        name,
-        email,
-        age,
-      });
+      const res = await axios.post(
+        `${API_URL}/api/createUser`,
+        {
+          name,
+          email,
+          age,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(res);
       navigate("/viewUser");
       toast.success("Created !!!");
