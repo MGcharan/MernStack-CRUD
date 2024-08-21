@@ -20,7 +20,7 @@ function Login() {
     e.preventDefault();
     const api_url = import.meta.env.VITE_API_URL;
     try {
-      const result = await axios.post(`${api_url}/login`, { email, password });
+      const result = await axios.post(`${api_url}/auth/login`, { email, password });
       if (result.status === 201 && result.data.token) {
         localStorage.setItem("token", result.data.token);
         toast.success("Login Successfully!!");

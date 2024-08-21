@@ -54,7 +54,7 @@ function Register() {
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
       try {
-        const res = await axios.post(`${api_url}/register`, formData);
+        const res = await axios.post(`${api_url}/auth/register`, formData);
         if (res.status === 201 || res.status === 204) {
           toast.success("Signup successful!!", {
             position: "top-right",

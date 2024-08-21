@@ -16,7 +16,7 @@ function CreateUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${API_URL}/createUser`, {
+      const res = await axios.post(`${API_URL}/api/createUser`, {
         name,
         email,
         age,
