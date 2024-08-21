@@ -9,7 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function Signup() {
+function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -217,4 +217,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Register;

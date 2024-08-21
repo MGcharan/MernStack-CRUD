@@ -8,9 +8,10 @@ import {
 import User from "./component/User";
 import CreateUser from "./component/CreateUser";
 import UpdateUser from "./component/UpdateUser";
-import Signup from "./pages/signup";
+
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       <Router>
         <ToastContainer />
         <Routes>
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/viewUser" element={<User />} />
           <Route
