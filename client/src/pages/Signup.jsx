@@ -47,7 +47,7 @@ function Signup() {
   };
 
   axios.defaults.withCredentials = true;
-  const api_url = "http://localhost:3000/auth";
+  const api_url = import.meta.env.VITE_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
