@@ -22,7 +22,7 @@ function User() {
 
   const fetchGetItem = async () => {
     try {
-      const result = await axios.get(`${API_URL}/getUser`);
+      const result = await axios.get(`${API_URL}/api/getUser`);
       if (result.status === 201) {
         setUsers(result.data);
       }
@@ -41,7 +41,7 @@ function User() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${API_URL}/updateUser/${edit}`, formData);
+      await axios.put(`${API_URL}/api/updateUser/${edit}`, formData);
       setEdit(null);
       fetchGetItem();
       toast.success("Updated Successfully");
@@ -53,7 +53,7 @@ function User() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/deleteUser/${id}`);
+      await axios.delete(`${API_URL}/api/deleteUser/${id}`);
       fetchGetItem();
       toast.success("Deleted successfully");
     } catch (err) {

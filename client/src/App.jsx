@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import User from "./component/User";
 import CreateUser from "./component/CreateUser";
-import UpdateUser from "./component/UpdateUser";
 
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
@@ -30,7 +29,6 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/update" element={<UpdateUser />} />
         </Routes>
       </Router>
     </>
