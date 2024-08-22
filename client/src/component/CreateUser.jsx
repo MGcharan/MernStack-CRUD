@@ -13,29 +13,38 @@ function CreateUser() {
 
   axios.defaults.withCredentials = true;
   const API_URL = import.meta.env.VITE_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Fetch the token from localStorage
     const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to create a user");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${API_URL}/api/createUser`,
-        {
-          name,
-          email,
-          age,
-        },
+        { name, email, age },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Attach the token to the request
           },
         }
       );
-      console.log(res);
-      navigate("/viewUser");
-      toast.success("Created !!!");
+
+      // Check for successful status codes
+      if (res.status === 201 || res.status === 204) {
+        navigate("/viewUser"); // Navigate to the user list view
+        toast.success("User created successfully!");
+      } else {
+        toast.error("Failed to create user. Please try again.");
+      }
     } catch (err) {
-      console.log(err);
-      toast.error("Something Wrong !");
+      console.log("Error:", err);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -46,7 +55,7 @@ function CreateUser() {
           <form onSubmit={handleSubmit}>
             <h2 className="text-center">Add User</h2>
             <div className="mb-2">
-              <label htmlFor="">Name</label>
+              <label htmlFor="name">Name</label>
               <input
                 type="text"
                 placeholder="Enter Name"
@@ -56,9 +65,9 @@ function CreateUser() {
               />
             </div>
             <div className="mb-2">
-              <label htmlFor="">Email</label>
+              <label htmlFor="email">Email</label>
               <input
-                type="text"
+                type="email"
                 placeholder="Enter Email"
                 className="form-control"
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,16 +75,18 @@ function CreateUser() {
               />
             </div>
             <div className="mb-2">
-              <label htmlFor="">Age</label>
+              <label htmlFor="age">Age</label>
               <input
-                type="text"
+                type="number"
                 placeholder="Enter Age"
                 className="form-control"
                 onChange={(e) => setAge(e.target.value)}
                 required
               />
             </div>
-            <button className="btn btn-success">Submit</button>
+            <button className="btn btn-success" type="submit">
+              Submit
+            </button>
           </form>
         </div>
       </div>
