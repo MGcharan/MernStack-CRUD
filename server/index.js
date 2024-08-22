@@ -16,9 +16,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://mern-crud-app-zr1v.onrender.com", // Update to your deployed frontend URL
+    origin: "https://fullstack-crud-app-72sx.onrender.com", // Update to your deployed frontend URL
     credentials: true, // Allow cookies to be sent with requests
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
   })
 );
 
